@@ -105,11 +105,13 @@ try_v wp --path="$STAGING_DIR" config create \
 $STAGING_DB_PASS
 EOF
 try_v wp --path="$STAGING_DIR" option update blog_public 0
+try_v wp --path="$STAGING_DIR" option update home "$STAGING_URLBASE"
+try_v wp --path="$STAGING_DIR" option update siteurl "$STAGING_URLBASE"
+
+log "Differentiating staging from prod."
 try_v wp --path="$STAGING_DIR" option update blogdescription \
   "$STAGING_BLOGDESCRIPTION"
 try_v wp --path="$STAGING_DIR" option update blogname "$STAGING_BLOGNAME"
-try_v wp --path="$STAGING_DIR" option update home "$STAGING_URLBASE"
-try_v wp --path="$STAGING_DIR" option update siteurl "$STAGING_URLBASE"
 
 # U2F doesn't work after changing domains, but staging is less
 # sensitive anyway.
