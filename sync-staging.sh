@@ -96,3 +96,8 @@ try_v wp --path="$STAGING_DIR" option update blogdescription \
 try_v wp --path="$STAGING_DIR" option update blogname "$STAGING_BLOGNAME"
 try_v wp --path="$STAGING_DIR" option update home "$STAGING_URLBASE"
 try_v wp --path="$STAGING_DIR" option update siteurl "$STAGING_URLBASE"
+
+
+log "Difference between .htaccess files:"
+diff -u "${PROD_DIR}/.htaccess" "${STAGING_DIR}/.htaccess" ||
+  test $? -eq 1 || fatal "diff failed"
