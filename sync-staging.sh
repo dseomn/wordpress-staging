@@ -8,6 +8,7 @@ try() { "$@" || fatal "Command failed: $*"; }
 try_v() { log "Running command: $*"; try "$@"; }
 
 
+ADMIN_USER=dseomn
 PROD_DIR=/home/public/david.mandelberg.org/beta
 PROD_DB_NAME=wordpress
 STAGING_BLOGNAME="Staging Site"
@@ -109,6 +110,14 @@ try_v wp --path="$STAGING_DIR" option update blogdescription \
 try_v wp --path="$STAGING_DIR" option update blogname "$STAGING_BLOGNAME"
 try_v wp --path="$STAGING_DIR" option update home "$STAGING_URLBASE"
 try_v wp --path="$STAGING_DIR" option update siteurl "$STAGING_URLBASE"
+
+# U2F doesn't work after changing domains, but staging is less
+# sensitive anyway.
+log "Setting less secure two-factor method."
+try_v wp --path="$STAGING_DIR" user meta update "$ADMIN_USER" \
+  _two_factor_enabled_providers '{"1":"Two_Factor_Email"}' --format=json
+try_v wp --path="$STAGING_DIR" user meta update "$ADMIN_USER" \
+  _two_factor_provider Two_Factor_Email
 
 
 log "Difference between .htaccess files:"
