@@ -34,6 +34,18 @@ UPLOAD_FILTER="
 " || exit 1
 
 
+test -f "${STAGING_DIR}/.staging" || {
+  error "The configured staging directory does not exist, or is not"
+  error "marked as a staging directory."
+  error
+  error "If it exists, and you are sure that you want (almost)"
+  error "everything in it to be deleted, run the following command:"
+  error
+  error "  touch \"${STAGING_DIR}/.staging\""
+  exit 1
+}
+
+
 # First, make sure the staging site is inaccessible until it's ready
 # for use again. This also ensures that `wp config create` below won't
 # fail due to an existing config file.
@@ -67,6 +79,7 @@ log "Copying files, excluding uploads."
 try_v rsync \
   -va --del \
   --exclude "/.htaccess" \
+  --exclude "/.staging" \
   --exclude "/wp-config.php" \
   --exclude "/wp-content/uploads/**" \
   "${PROD_DIR}/" "${STAGING_DIR}/"
