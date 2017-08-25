@@ -13,6 +13,7 @@ PROD_DIR=/home/public/david.mandelberg.org/beta
 PROD_DB_NAME=wordpress
 STAGING_BLOGNAME="Staging Site"
 STAGING_BLOGDESCRIPTION="WARNING: Staging site. All changes will be lost."
+STAGING_ADMIN_COLOR=sunrise
 STAGING_DIR=/home/public/staging.david.mandelberg.org
 STAGING_URLBASE=https://staging.david.mandelberg.org
 STAGING_DB_NAME=wordpress_staging
@@ -112,6 +113,8 @@ log "Differentiating staging from prod."
 try_v wp --path="$STAGING_DIR" option update blogdescription \
   "$STAGING_BLOGDESCRIPTION"
 try_v wp --path="$STAGING_DIR" option update blogname "$STAGING_BLOGNAME"
+try_v wp --path="$STAGING_DIR" user meta update "$ADMIN_USER" \
+  admin_color "$STAGING_ADMIN_COLOR"
 
 # U2F doesn't work after changing domains, but staging is less
 # sensitive anyway.
