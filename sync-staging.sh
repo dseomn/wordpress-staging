@@ -82,6 +82,7 @@ try_v rsync \
   -va --del \
   --exclude "/.htaccess" \
   --exclude "/.staging" \
+  --exclude "/.well-known" \
   --exclude "/wp-config.php" \
   --exclude "/wp-content/uploads/**" \
   "${PROD_DIR}/" "${STAGING_DIR}/"
