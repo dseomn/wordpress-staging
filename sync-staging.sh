@@ -129,3 +129,5 @@ try_v wp --path="$STAGING_DIR" user meta update "$ADMIN_USER" \
 log "Difference between .htaccess files:"
 diff -u "${PROD_DIR}/.htaccess" "${STAGING_DIR}/.htaccess" ||
   test $? -eq 1 || fatal "diff failed"
+
+log "Staging site is ready: ${STAGING_URLBASE}"
