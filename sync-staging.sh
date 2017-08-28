@@ -14,6 +14,7 @@ PROD_DB_NAME=wordpress
 STAGING_BLOGNAME="Staging Site"
 STAGING_BLOGDESCRIPTION="WARNING: Staging site. All changes will be lost."
 STAGING_ADMIN_COLOR=sunrise
+STAGING_ADMIN_PASS="$(try hexdump -n 32 -e '1/1 "%02x"' /dev/urandom)" || exit 1
 STAGING_DIR=/home/public/staging.david.mandelberg.org
 STAGING_URLBASE=https://staging.david.mandelberg.org
 STAGING_DB_NAME=wordpress_staging
@@ -109,6 +110,9 @@ EOF
 try_v wp --path="$STAGING_DIR" option update blog_public 0
 try_v wp --path="$STAGING_DIR" option update home "$STAGING_URLBASE"
 try_v wp --path="$STAGING_DIR" option update siteurl "$STAGING_URLBASE"
+try_v wp --path="$STAGING_DIR" user update "$ADMIN_USER" --prompt=user_pass <<EOF
+$STAGING_ADMIN_PASS
+EOF
 
 log "Differentiating staging from prod."
 try_v wp --path="$STAGING_DIR" option update blogdescription \
@@ -131,3 +135,7 @@ diff -u "${PROD_DIR}/.htaccess" "${STAGING_DIR}/.htaccess" ||
   test $? -eq 1 || fatal "diff failed"
 
 log "Staging site is ready: ${STAGING_URLBASE}"
+cat <<EOF
+Username: ${ADMIN_USER}
+Password: ${STAGING_ADMIN_PASS}
+EOF
