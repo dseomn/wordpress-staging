@@ -9,7 +9,7 @@ try_v() { log "Running command: $*"; try "$@"; }
 
 
 ADMIN_USER=dseomn
-PROD_DIR=/home/public/david.mandelberg.org/beta
+PROD_DIR=/home/public/david.mandelberg.org
 PROD_DB_NAME=wordpress
 STAGING_BLOGNAME="Staging Site"
 STAGING_BLOGDESCRIPTION="WARNING: Staging site. All changes will be lost."
