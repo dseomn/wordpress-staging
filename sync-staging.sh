@@ -35,6 +35,11 @@ UPLOAD_FILTER="
 - /[0-9][0-9][0-9][0-9]/***
 " || exit 1
 
+# These plugins will be deactivated in staging.
+DEACTIVATE_PLUGINS="
+email-subscribers
+"
+
 
 test -f "${STAGING_DIR}/.staging" || {
   error "The configured staging directory does not exist, or is not"
@@ -116,6 +121,11 @@ try_v wp --path="$STAGING_DIR" option update blogdescription \
 try_v wp --path="$STAGING_DIR" option update blogname "$STAGING_BLOGNAME"
 try_v wp --path="$STAGING_DIR" user meta update "$ADMIN_USER" \
   admin_color "$STAGING_ADMIN_COLOR"
+
+if test -n "$DEACTIVATE_PLUGINS"; then
+  log "Deactivating plugins."
+  try_v wp --path="$STAGING_DIR" plugin deactivate $DEACTIVATE_PLUGINS
+fi
 
 # U2F doesn't work after changing domains, but staging is less
 # sensitive anyway.
