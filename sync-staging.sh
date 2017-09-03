@@ -38,6 +38,7 @@ UPLOAD_FILTER="
 # These plugins will be deactivated in staging.
 DEACTIVATE_PLUGINS="
 email-subscribers
+facebook-auto-publish
 "
 
 
